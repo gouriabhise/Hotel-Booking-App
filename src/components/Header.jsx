@@ -7,8 +7,10 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import {format} from  "date-fns"
+import { useNavigate } from 'react-router-dom'
 const Header = ({type}) => {
     const [openDate,setOpenDate]=useState(false)
+    const[destination,setDestination]=useState("")
     const [date,setDate]=useState([
         {
             startDate:new Date(),
@@ -25,6 +27,7 @@ const Header = ({type}) => {
         room:1
     })
 
+    const navigate=useNavigate()
     const handleOption=(name,operation)=>{
         setOptions(prev=>{return {
             ...prev,
@@ -32,6 +35,9 @@ const Header = ({type}) => {
         }})
     }
 
+    const handleSearch=()=>{
+navigate('/hotels',{state:{destination,date,options}})
+    }
   return (
     <div className='header'>
         <div className={type==="list"?"headerContainer listMode":"headerContainer"}>
@@ -67,7 +73,11 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quae, aliquam 
        <div className='headerSearch'>
         <div className='headerSearchitem'>
             <FontAwesomeIcon icon={faBed} className='headerIcon'/>
-            <input type='text' placeholder='where are you going' className='headerSearchInput'/>
+            <input type='text'
+             placeholder='where are you going' 
+             className='headerSearchInput'
+             onChange={e=>setDestination(e.target.value)}
+             />
         </div>
 
         <div className='headerSearchitem'>
@@ -128,7 +138,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quae, aliquam 
         </div>
 
         <div className='headerSearchitem'>
-            <button className='headerBtn'>Search</button>
+            <button className='headerBtn' onClick={handleSearch}>Search</button>
             </div>
        </div>
        </>
